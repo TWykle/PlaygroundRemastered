@@ -1,4 +1,4 @@
-name: Android Build Dev
+name: Android Build APK
 
 # Workflow triggers on a push to the develop branch
 on:
