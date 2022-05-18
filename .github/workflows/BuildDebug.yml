@@ -18,6 +18,9 @@ jobs:
       working-directory: ./photo-gallery
 
   steps:
+   - name: One line script
+     run: env
+  
    - name: Checkout SRC
      uses: actions/checkout@v2
 
@@ -65,4 +68,5 @@ jobs:
      with:
        appId: ${{secrets.FIREBASE_APP_ID}}
        token: ${{secrets.FIREBASE_TOKEN}}
-       file: Documents/Github/TWyklePlayground/photo-gallery/android/app/build/outputs/apk/debug/app-debug.apk
+       file: /photo-gallery/android/app/build/outputs/apk/debug/
+       #app-debug.apk
