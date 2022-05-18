@@ -1,0 +1,67 @@
+name: Android Build Dev
+
+# Workflow triggers on a push to the develop branch
+on:
+ push:
+   branches:
+        - main
+        - Develop
+
+
+jobs:
+ build:
+  name: Build APK
+  runs-on: ubuntu-latest
+  defaults:
+    run:
+      working-directory: ./photo-gallery
+
+  steps:
+   - name: Checkout SRC
+     uses: actions/checkout@v2
+
+   - name: Setup Java
+     uses: actions/setup-java@v1
+     with:
+         distribution: 'zulu'
+         java-version: '11'
+
+   - name: Setup Node
+     uses: actions/setup-node@v3
+     with:
+      node-version: '14'
+      
+   - name: Setup Homebrew
+     run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   
+   - name: Setup Gradle
+     run: brew install gradle
+
+   - name: Install Ionic
+     run: npm install -g @ionic/cli
+
+   - name: Install Capacitor
+     run: npm install @capacitor/camera @capacitor/storage @capacitor/filesystem @capacitor/android
+     
+   - name: Install Dependencies
+     run: npm install
+     
+   - name: Build for Android
+     run: ionic build --platform=android
+   
+   #- name: Ionic Init
+     #run: ionic init "photo-gallery" --type=angular
+     
+   - name: Ionic Sync
+     run: ionic capacitor sync android
+ 
+   
+   - name: Create APK
+     run: cd android && ./gradlew assembleDebug && cd ..
+
+   - name: Push to Firebase
+     uses: wzieba/Firebase-Distribution-Github-Action@v1
+     with:
+       appId: ${{secrets.FIREBASE_APP_ID}}
+       token: ${{secrets.FIREBASE_TOKEN}}
+       file: Documents/Github/TWyklePlayground/photo-gallery/android/app/build/outputs/apk/debug/app-debug.apk
