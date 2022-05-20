@@ -1,8 +1,7 @@
 name: Android Build APK
 
-# Workflow triggers on a push to the develop branch
 on:
- push:
+  push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
@@ -66,4 +65,4 @@ jobs:
      with:
        appId: ${{secrets.FIREBASE_APP_ID}}
        token: ${{secrets.FIREBASE_TOKEN}}
-       file: Documents/Github/TWyklePlayground/photo-gallery/android/app/build/outputs/apk/debug/app-debug.apk
+       file: /home/runner/work/PlaygroundRemastered/PlaygroundRemastered/./photo-gallery/android/app/build/outputs/apk/debug/app-debug.apk
